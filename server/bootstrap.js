@@ -8,7 +8,8 @@ require('@babel/register')({
   plugins: [
     '@babel/plugin-syntax-dynamic-import',
     'dynamic-import-node',
-    // 'react-loadable/babel'
+    // 'react-loadable/babel',
+    'babel-plugin-styled-components'
   ]
 });
 
