@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 
 import './App.css';
 
 import { Container } from './App.style';
 import RouterTree from './core/components/RouterTree';
+import { DEMO_DATA_ACTIONS } from './core/store/actions/demoDataAction';
 
 /* START - Dummy component for testing routing config */
-function Sandwiches() {
-  return <h2>Sandwiches</h2>;
+function mapStateToProps (_) {
+  return {};
 }
+
+function mapDispatchToProps (dispatch) {
+  return {
+    fetchDemoData: () => dispatch (DEMO_DATA_ACTIONS.fetchDemoData())
+  };
+}
+
+const Sandwiches = connect(mapStateToProps, mapDispatchToProps)(function ({ fetchDemoData }) {
+  useEffect(() => {
+    fetchDemoData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <h2>Sandwiches</h2>;
+});
 
 function Tacos({ routes }) {
   return (
