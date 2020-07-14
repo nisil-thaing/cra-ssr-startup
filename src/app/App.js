@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
@@ -8,25 +8,31 @@ import './App.css';
 import { Container } from './App.style';
 import RouterTree from './core/components/RouterTree';
 import { DEMO_DATA_ACTIONS } from './core/store/actions/demoDataAction';
+import { getDemoDataStateData } from './core/store/selectors/demoDataSelector';
 
 /* START - Dummy component for testing routing config */
-function mapStateToProps (_) {
-  return {};
-}
+const mapStateToProps = state => ({
+  demoData: getDemoDataStateData(state)
+});
 
-function mapDispatchToProps (dispatch) {
-  return {
-    fetchDemoData: () => dispatch (DEMO_DATA_ACTIONS.fetchDemoData())
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  fetchDemoData: () => dispatch (DEMO_DATA_ACTIONS.fetchDemoData())
+});
 
-const Sandwiches = connect(mapStateToProps, mapDispatchToProps)(function ({ fetchDemoData }) {
+const Sandwiches = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(function ({ demoData, fetchDemoData }) {
   useEffect(() => {
     fetchDemoData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <h2>Sandwiches</h2>;
+  return (
+    <Fragment>
+      <h2>Sandwiches</h2>
+      <div>{ JSON.stringify(demoData) }</div>
+    </Fragment>);
 });
 
 function Tacos({ routes }) {
