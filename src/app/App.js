@@ -2,6 +2,7 @@ import React, { useEffect, Fragment } from 'react';
 import { Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
+import { canUseDOM } from 'exenv';
 
 import './App.css';
 
@@ -23,10 +24,13 @@ const Sandwiches = connect(
   mapStateToProps,
   mapDispatchToProps
 )(function ({ demoData, fetchDemoData }) {
-  useEffect(() => {
+  if (!canUseDOM) {
     fetchDemoData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }
+
+  useEffect(() => {
+    console.log('demoData', demoData);
+  }, [demoData]);
 
   return (
     <Fragment>

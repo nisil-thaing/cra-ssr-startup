@@ -10,6 +10,7 @@ const router = express.Router();
 function actionIndex (req, res, next) {
   const history = createMemoryHistory({ basename: '/' });
   const store = configureAppStore({}, history);
+
   serverRenderer(store, history)(req, res, next);
 }
 
