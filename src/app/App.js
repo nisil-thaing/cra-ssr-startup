@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { Switch, Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
+import { canUseDOM } from 'exenv';
 
 import './App.css';
 
 import { Container } from './App.style';
 import RouterTree from './core/components/RouterTree';
+import { DEMO_DATA_ACTIONS } from './core/store/actions/demoDataAction';
+import { getDemoDataStateData } from './core/store/selectors/demoDataSelector';
 
 /* START - Dummy component for testing routing config */
-function Sandwiches() {
-  return <h2>Sandwiches</h2>;
-}
+const mapStateToProps = state => ({
+  demoData: getDemoDataStateData(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchDemoData: () => dispatch (DEMO_DATA_ACTIONS.fetchDemoData())
+});
+
+const Sandwiches = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(function ({ demoData, fetchDemoData }) {
+  if (!canUseDOM) {
+    fetchDemoData();
+  }
+
+  useEffect(() => {
+    console.log('demoData', demoData);
+  }, [demoData]);
+
+  return (
+    <Fragment>
+      <h2>Sandwiches</h2>
+      <div>{ JSON.stringify(demoData) }</div>
+    </Fragment>);
+});
 
 function Tacos({ routes }) {
   return (
