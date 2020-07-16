@@ -12,7 +12,7 @@ import * as serviceWorker from './serviceWorker';
 import configureAppStore from 'app/core/store';
 
 const history = createBrowserHistory({ basename: '/' });
-const initialState = window.INITIAL_REDUX_STATE;
+const initialState = window.__INITIAL_REDUX_STATE__;
 const rootStore = configureAppStore(initialState, history);
 const render = module.hot ? ReactDOM.render : ReactDOM.hydrate;
 
