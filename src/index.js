@@ -3,12 +3,14 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
+import { I18nextProvider } from 'react-i18next';
 import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 
 import './index.css';
 import App from 'app/App';
 import * as serviceWorker from './serviceWorker';
+import i18next from 'app/i18n';
 import configureAppStore from 'app/core/store';
 
 const history = createBrowserHistory({ basename: '/' });
@@ -20,11 +22,13 @@ render(
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={ rootStore }>
-        <ConnectedRouter history={ history }>
-          <Router history={ history }>
-            <App />
-          </Router>
-        </ConnectedRouter>
+        <I18nextProvider i18n={ i18next }>
+          <ConnectedRouter history={ history }>
+            <Router history={ history }>
+              <App />
+            </Router>
+          </ConnectedRouter>
+        </I18nextProvider>
       </Provider>
     </HelmetProvider>
   </React.StrictMode>,
