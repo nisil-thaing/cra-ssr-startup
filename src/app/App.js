@@ -2,6 +2,7 @@ import React, { useEffect, Fragment } from 'react';
 import { Switch, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 import { canUseDOM } from 'exenv';
 
 import './App.css';
@@ -92,10 +93,12 @@ const routes = [
 ];
 
 function App() {
+  const { t } = useTranslation();
+
   return (
     <Container className="App">
       <Helmet>
-        <title>React App</title>
+        <title>{ t('HELLO_REACT_APP') }</title>
       </Helmet>
       <header className="App-header">
         <img src="/logo.svg" className="App-logo" alt="logo" />
@@ -106,9 +109,8 @@ function App() {
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
+          rel="noopener noreferrer" >
+          { t('HELLO_REACT_APP') }
         </a>
       </header>
       <div>

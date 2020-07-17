@@ -1,8 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 
-const demoDataState = state => state.demoData;
+const getDemoDataState = state => state.demoData;
 
 export const getDemoDataStateData = createSelector(
-  demoDataState,
+  getDemoDataState,
   state => state.data
 );
