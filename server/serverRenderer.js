@@ -5,6 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 import { Provider as ReduxProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
+import { I18nextProvider } from 'react-i18next';
 import { HelmetProvider } from 'react-helmet-async';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
@@ -41,7 +42,9 @@ export default function (rootStore, history) {
               <ReduxProvider store={ rootStore }>
                 <ConnectedRouter history={ history }>
                   <StaticRouter location={ req.baseUrl } context={ routerContext }>
-                    <App />
+                    <I18nextProvider i18n={ req.i18n }>
+                      <App />
+                    </I18nextProvider>
                   </StaticRouter>
                 </ConnectedRouter>
               </ReduxProvider>
