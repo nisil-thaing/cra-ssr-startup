@@ -7,17 +7,19 @@ import locale_vn from 'locale/vn.json';
 import locale_cn from 'locale/cn.json';
 import locale_ar from 'locale/ar.json';
 
+import { SUPPORTED_LANGUAGE_CODES } from './core/constants/ui-state.constant';
+
 const langResources = {
-  en: {
+  [SUPPORTED_LANGUAGE_CODES.ENGLISH]: {
     translation: locale_en
   },
-  vn: {
+  [SUPPORTED_LANGUAGE_CODES.VIETNAMESE]: {
     translation: locale_vn
   },
-  cn: {
+  [SUPPORTED_LANGUAGE_CODES.CHINESE_SIMPLIFY]: {
     translation: locale_cn
   },
-  ar: {
+  [SUPPORTED_LANGUAGE_CODES.ARABIC]: {
     translation: locale_ar
   }
 };
@@ -26,11 +28,11 @@ i18next
   .use(ICU)
   .use(middleware.LanguageDetector)
   .init({
-    fallbackLng: 'en',
-    lng: 'en',
+    fallbackLng: SUPPORTED_LANGUAGE_CODES.ENGLISH,
+    lng: SUPPORTED_LANGUAGE_CODES.ENGLISH,
     interpolation: { escapeValue: false },
     resources: langResources,
-    preload: ['en', 'vn', 'cn', 'ar']
+    preload: Object.keys(SUPPORTED_LANGUAGE_CODES)
   });
 
 export default i18next;

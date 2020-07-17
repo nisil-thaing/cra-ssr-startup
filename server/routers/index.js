@@ -6,11 +6,12 @@ import middleware from 'i18next-http-middleware';
 import serverRenderer from '../serverRenderer';
 import configureAppStore from 'app/core/store';
 import i18next from 'app/i18n';
+import { SUPPORTED_LANGUAGE_CODES } from 'app/core/constants/ui-state.constant';
 
 const router = express.Router();
 
 function actionIndex (req, res, next) {
-  req.i18n.changeLanguage('en');
+  req.i18n.changeLanguage(SUPPORTED_LANGUAGE_CODES.ENGLISH);
   const history = createMemoryHistory({ basename: '/' });
   const store = configureAppStore({}, history);
 
