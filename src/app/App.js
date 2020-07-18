@@ -1,92 +1,63 @@
-import React, { useEffect, Fragment } from 'react';
+import React from 'react';
+import Loadable from 'react-loadable';
 import { Switch, Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { canUseDOM } from 'exenv';
 
 import './App.css';
 
 import { Container } from './App.style';
 import RouterTree from './core/components/RouterTree';
-import { DEMO_DATA_ACTIONS } from './core/store/actions/demoDataAction';
-import { getDemoDataStateData } from './core/store/selectors/demoDataSelector';
+import PageLoading from './core/components/PageLoading';
 
 /* START - Dummy component for testing routing config */
-const mapStateToProps = state => ({
-  demoData: getDemoDataStateData(state)
-});
+const AsyncSandwichesPage = Loadable({
+    loader: function () {
+      return import( /* webpackChunkName: "sandwichesPage" */ 'app/views/DummyPage/SandwichesPage');
+    },
+    loading: PageLoading,
+    modules: ['sandwichesPage']
+  }),
+  AsyncTacosPage = Loadable({
+    loader: function () {
+      return import( /* webpackChunkName: "tacosPage" */ 'app/views/DummyPage/TacosPage');
+    },
+    loading: PageLoading,
+    modules: ['tacosPage']
+  }),
+  AsyncBusPage = Loadable({
+    loader: function () {
+      return import( /* webpackChunkName: "busPage" */ 'app/views/DummyPage/BusPage');
+    },
+    loading: PageLoading,
+    modules: ['busPage']
+  }),
+  AsyncCartPage = Loadable({
+    loader: function () {
+      return import( /* webpackChunkName: "cartPage" */ 'app/views/DummyPage/CartPage');
+    },
+    loading: PageLoading,
+    modules: ['cartPage']
+  });
 
-const mapDispatchToProps = dispatch => ({
-  fetchDemoData: () => dispatch (DEMO_DATA_ACTIONS.fetchDemoData())
-});
-
-const Sandwiches = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(function ({ demoData, fetchDemoData }) {
-  if (!canUseDOM) {
-    fetchDemoData();
-  }
-
-  useEffect(() => {
-    console.log('demoData', demoData);
-  }, [demoData]);
-
-  return (
-    <Fragment>
-      <h2>Sandwiches</h2>
-      <div>{ JSON.stringify(demoData) }</div>
-    </Fragment>);
-});
-
-function Tacos({ routes }) {
-  return (
-    <div>
-      <h2>Tacos</h2>
-      <ul>
-        <li>
-          <Link to="/tacos/bus">Bus</Link>
-        </li>
-        <li>
-          <Link to="/tacos/cart">Cart</Link>
-        </li>
-      </ul>
-
-      <Switch>
-        {routes.map((route, i) => (
-          <RouterTree key={i} {...route} />
-        ))}
-      </Switch>
-    </div>
-  );
-}
-
-function Bus() {
-  return <h3>Bus</h3>;
-}
-
-function Cart() {
-  return <h3>Cart</h3>;
-}
 /* END - Dummy component for testing routing config */
 
 const routes = [
   {
     path: '/sandwiches',
-    component: Sandwiches
+    component: AsyncSandwichesPage
   },
   {
     path: '/tacos',
-    component: Tacos,
+    component: AsyncTacosPage,
     routes: [
       {
         path: '/tacos/bus',
-        component: Bus
+        component: AsyncBusPage
       },
       {
         path: '/tacos/cart',
-        component: Cart
+        component: AsyncCartPage
       }
     ]
   }

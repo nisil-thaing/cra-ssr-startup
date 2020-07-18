@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Loadable from 'react-loadable';
 import { Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { HelmetProvider } from 'react-helmet-async';
@@ -18,7 +19,7 @@ const initialState = window.__INITIAL_REDUX_STATE__;
 const rootStore = configureAppStore(initialState, history);
 const render = module.hot ? ReactDOM.render : ReactDOM.hydrate;
 
-render(
+const AppBundle = (
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={ rootStore }>
@@ -31,11 +32,19 @@ render(
         </I18nextProvider>
       </Provider>
     </HelmetProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+window.onload = function() {
+  Loadable.preloadReady().then(function () {
+    render(
+      AppBundle,
+      document.getElementById('root')
+    );
+  });
+
+  // If you want your app to work offline and load faster, you can change
+  // unregister() to register() below. Note this comes with some pitfalls.
+  // Learn more about service workers: https://bit.ly/CRA-PWA
+  serviceWorker.unregister();
+};

@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import Loadable from 'react-loadable';
 import { Provider as ReduxProvider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom';
 import { ConnectedRouter } from 'connected-react-router';
@@ -37,19 +38,21 @@ export default function (rootStore, history) {
   
       try {
         initialMarkup = ReactDOMServer.renderToString(
-          <HelmetProvider context={ helmetContext }>
-            <StyleSheetManager sheet={ sheet.instance }>
-              <ReduxProvider store={ rootStore }>
-                <ConnectedRouter history={ history }>
-                  <StaticRouter location={ req.baseUrl } context={ routerContext }>
-                    <I18nextProvider i18n={ req.i18n }>
-                      <App />
-                    </I18nextProvider>
-                  </StaticRouter>
-                </ConnectedRouter>
-              </ReduxProvider>
-            </StyleSheetManager>
-          </HelmetProvider>
+          <Loadable.Capture report={ moduleName => modules.push(moduleName) }>
+            <HelmetProvider context={ helmetContext }>
+              <StyleSheetManager sheet={ sheet.instance }>
+                <ReduxProvider store={ rootStore }>
+                  <ConnectedRouter history={ history }>
+                    <StaticRouter location={ req.baseUrl } context={ routerContext }>
+                      <I18nextProvider i18n={ req.i18n }>
+                        <App />
+                      </I18nextProvider>
+                    </StaticRouter>
+                  </ConnectedRouter>
+                </ReduxProvider>
+              </StyleSheetManager>
+            </HelmetProvider>
+          </Loadable.Capture>
         );
         styleTags = sheet.getStyleTags(); // or sheet.getStyleElement();
       } catch (error) {
@@ -60,7 +63,7 @@ export default function (rootStore, history) {
       }
   
       const extraChunks = extractAssets(manifest, modules)
-        .map(c => `<script type="text/javascript" src="/${c}"></script>`);
+        .map(chunk => `<shunkript type="text/javascript" src="/${ chunk }"></script>`);
       const { helmet } = helmetContext;
       const reduxState = JSON.stringify(rootStore.getState());
   
