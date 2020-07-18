@@ -10,7 +10,7 @@ require('@babel/register')({
     '@babel/plugin-syntax-dynamic-import',
     '@babel/plugin-proposal-class-properties',
     'dynamic-import-node',
-    // 'react-loadable/babel',
+    'react-loadable/babel',
     'babel-plugin-styled-components'
   ]
 });
