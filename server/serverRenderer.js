@@ -63,7 +63,7 @@ export default function (rootStore, history) {
       }
   
       const extraChunks = extractAssets(manifest, modules)
-        .map(chunk => `<shunkript type="text/javascript" src="/${ chunk }"></script>`);
+        .map(chunk => `<script type="text/javascript" src="/${ chunk }"></script>`);
       const { helmet } = helmetContext;
       const reduxState = JSON.stringify(rootStore.getState());
   
